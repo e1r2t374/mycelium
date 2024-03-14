@@ -15,7 +15,6 @@ void help(){
 	printf("Enumeration 2: Packages.\n");
 	printf("Enumeration 3: Privilege Escalation.\n");
 	printf("Enumeration 4: Sensitive Information.\n");
-	printf("Enumeration 5: Users.\n");
 	printf("\n%s\033[1m(Stealth Options):\n%s",YELLOW,NORMAL);
 	printf("Stealth 1: No Stealth.\n");
 	printf("Stealth 2: Semi-Stealthy.\n");
@@ -29,28 +28,47 @@ void error(char* errmsg){
 	abort();
 }
 int main(int argc, char **argv) {
-	if(argc < 3){error("Not Enough Flags Provided!\n");}
+	if(argc < 3){error("Not Enough Flags Provided!");}
 	else{
 		int opt; int e = 0; int s = 0;
 		while ((opt = getopt(argc, argv, "e:s:")) != -1){
 			switch (opt){
 				case 'e':
-					if(atoi(optarg) > 0 && atoi(optarg) <= 9){
+					if(atoi(optarg) > 0 && atoi(optarg) <= 4){
 						e = atoi(optarg);
 					}
 					else{error("Invalid Enumeration Option!");}
 					break;
 				case 's': 
-					if(atoi(optarg) > 0 && atoi(optarg) <= 9){
+					if(atoi(optarg) > 0 && atoi(optarg) <= 4){
 						s = atoi(optarg);
 					}
 					else{error("Invalid Stealth Option!");}
 					break;
-				default:break;
+				case '?': error("Invalid Flag!");break;
+				default:error("You broke something!");break;
 			}
 		}
 		if(e == 0 || s == 0){error("Invalid Flags!");}
-		printf("e:%d,s:%d",e,s);
+		else{
+			switch(e){
+				case 1:break;
+				case 2:break;
+				case 3:break;
+				case 4:break;
+				case'?':break;
+				default:break;
+			}
+			switch(s){
+				case 1:break;
+				case 2:break;
+				case 3:break;
+				case 4:break;
+				case'?':break;
+				default:break;
+			}
+			printf("e:%d,s:%d",e,s);
+		}
 	}
   	return 0;
 }
