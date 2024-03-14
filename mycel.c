@@ -8,22 +8,49 @@
 #define NORMAL "\033[0m"
 void help(){
 	printf("%s\033[1m[Usage]:\033[0m\n\n",YELLOW);
-	printf("%s(Syntax)\n./%s\b\b -e<MODE> -s<STEALTH>\n\n",YELLOW,__FILE__);
-	printf("%sExample: ./%s\b\b -e 1 -s 1\n\n",YELLOW,__FILE__);
-	printf("%s\033[1m(Mode Options):\n%s",YELLOW,NORMAL);
-	printf("%sMode 1: Everything.\n",YELLOW);
-	printf("%sMode 2: Packages.\n",YELLOW);
-	printf("%sMode 3: Privilege Escalation.\n",YELLOW);
-	printf("%sMode 4: Sensitive Information(Credentials).\n",YELLOW);
-	printf("%sMode 5: Users.\n",YELLOW);
+	printf("%s\033[1m(Syntax):%s\n./%s\b\b -e <ENUMERATE> -s <STEALTH>\n\n",YELLOW,NORMAL,__FILE__);
+	printf("%s\033[1m(Example):%s\n ./%s\b\b -e 1 -s 1\n\n",YELLOW,NORMAL,__FILE__);
+	printf("%s\033[1m(Enumeration Options):\n%s",YELLOW,NORMAL);
+	printf("Enumeration 1: Everything.\n");
+	printf("Enumeration 2: Packages.\n");
+	printf("Enumeration 3: Privilege Escalation.\n");
+	printf("Enumeration 4: Sensitive Information.\n");
+	printf("Enumeration 5: Users.\n");
 	printf("\n%s\033[1m(Stealth Options):\n%s",YELLOW,NORMAL);
-	printf("%sStealth 1: No Stealth.\n",YELLOW);
-	printf("%sStealth 2: Semi-Stealthy.\n",YELLOW);
-	printf("%sStealth 3: Stealthy.\n",YELLOW);
-	printf("%sStealth 4: Very Stealthy.\n",YELLOW);
+	printf("Stealth 1: No Stealth.\n");
+	printf("Stealth 2: Semi-Stealthy.\n");
+	printf("Stealth 3: Stealthy.\n");
+	printf("Stealth 4: Very Stealthy.\n");
 	printf("%s\n",NORMAL);
+}
+void error(char* errmsg){
+	fprintf(stderr,"\033[1m%sERROR:%s\033[0m\n",RED,errmsg);
+	help();
 	abort();
 }
 int main(int argc, char **argv) {
+	if(argc < 3){error("Not Enough Flags Provided!\n");}
+	else{
+		int opt; int e = 0; int s = 0;
+		while ((opt = getopt(argc, argv, "e:s:")) != -1){
+			switch (opt){
+				case 'e':
+					if(atoi(optarg) > 0 && atoi(optarg) <= 9){
+						e = atoi(optarg);
+					}
+					else{error("Invalid Enumeration Option!");}
+					break;
+				case 's': 
+					if(atoi(optarg) > 0 && atoi(optarg) <= 9){
+						s = atoi(optarg);
+					}
+					else{error("Invalid Stealth Option!");}
+					break;
+				default:break;
+			}
+		}
+		if(e == 0 || s == 0){error("Invalid Flags!");}
+		printf("e:%d,s:%d",e,s);
+	}
   	return 0;
 }
