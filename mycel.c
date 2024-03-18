@@ -6,20 +6,21 @@
 #define YELLOW "\033[38;2;200;200;0m"
 #define GREEN "\033[38;2;0;150;0m"
 #define NORMAL "\033[0m"
+#define BOLD "\033[1m"
 void help(){
-	printf("%s\033[1m[Usage]:\033[0m\n\n",YELLOW);
-	printf("%s\033[1m(Syntax):%s\n./%s\b\b -e <ENUMERATE> -s <STEALTH>\n\n",YELLOW,NORMAL,__FILE__);
-	printf("%s\033[1m(Example):%s\n ./%s\b\b -e 1 -s 1\n\n",YELLOW,NORMAL,__FILE__);
-	printf("%s\033[1m(Enumeration Options):\n%s",YELLOW,NORMAL);
+	printf("%s%s[Usage]:%s\n\n",BOLD,YELLOW,NORMAL);
+	printf("%s%s(Syntax):%s\n./%s\b\b -e <ENUMERATE> -s <STEALTH>\n\n",BOLD,YELLOW,NORMAL,__FILE__);
+	printf("%s%s(Example):%s\n ./%s\b\b -e 1 -s 1\n\n",BOLD,YELLOW,NORMAL,__FILE__);
+	printf("%s%s(Enumeration Options):\n%s",BOLD,YELLOW,NORMAL);
 	printf("Enumeration 1: Everything.\n");
 	printf("Enumeration 2: Packages.\n");
 	printf("Enumeration 3: Privilege Escalation.\n");
 	printf("Enumeration 4: Sensitive Information.\n");
-	printf("\n%s\033[1m(Stealth Options):\n%s",YELLOW,NORMAL);
+	printf("Enumeration 5: Network.\n");
+	printf("\n%s%s(Stealth Options):\n%s",BOLD,YELLOW,NORMAL);
 	printf("Stealth 1: No Stealth.\n");
 	printf("Stealth 2: Semi-Stealthy.\n");
 	printf("Stealth 3: Stealthy.\n");
-	printf("Stealth 4: Very Stealthy.\n");
 	printf("%s\n",NORMAL);
 }
 void error(char* errmsg){
@@ -40,7 +41,7 @@ int main(int argc, char **argv) {
 					else{error("Invalid Enumeration Option!");}
 					break;
 				case 's': 
-					if(atoi(optarg) > 0 && atoi(optarg) <= 4){
+					if(atoi(optarg) > 0 && atoi(optarg) <= 3){
 						s = atoi(optarg);
 					}
 					else{error("Invalid Stealth Option!");}
@@ -52,22 +53,63 @@ int main(int argc, char **argv) {
 		if(e == 0 || s == 0){error("Invalid Flags!");}
 		else{
 			switch(e){
-				case 1:break;
-				case 2:break;
-				case 3:break;
-				case 4:break;
+				case 1:
+					switch(s){
+						case 1:break;
+						case 2:break;
+						case 3:break;
+						case'?':break;
+						default:break;
+					}
+					break;
+				
+				case 2:
+					switch(s){
+						case 1:
+							if(system("apt list --installed 2>/dev/null 1>/dev/null")==0){
+								printf("%s%s\n[Apt packages]%s\n",BOLD,GREEN,NORMAL);
+								if(system("apt list --installed 2>/dev/null")!=0){
+									error("apt error");
+								}
+							}
+							if(system("dpkg --get-selections 2>/dev/null 1>/dev/null")==0){
+								printf("%s%s\n[Debian packages]%s\n",BOLD,GREEN,NORMAL);
+								if(system(" dpkg --get-selections 2>/dev/null")!=0){
+									error("dpkg error");
+								}
+							}
+							if(system("rpm -qa 2>/dev/null 1>/dev/null")==0){printf("RedHat packages");}
+							if(system("snap list 2>/dev/null 1>/dev/null")==0){printf("Snap packages");}
+							break;
+						case 2:break;
+						case 3:break;
+						case'?':break;
+						default:break;
+					}
+					break;
+				case 3:
+					switch(s){
+						case 1:break;
+						case 2:break;
+						case 3:break;
+						case'?':break;
+						default:break;
+					}
+					break;
+				case 4:
+					switch(s){
+						case 1:break;
+						case 2:break;
+						case 3:break;
+						case'?':break;
+						default:break;
+					}
+					break;
 				case'?':break;
 				default:break;
 			}
-			switch(s){
-				case 1:break;
-				case 2:break;
-				case 3:break;
-				case 4:break;
-				case'?':break;
-				default:break;
-			}
-			printf("e:%d,s:%d",e,s);
+			
+			printf("\n\n\ne:%d,s:%d\n",e,s);
 		}
 	}
   	return 0;
