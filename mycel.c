@@ -74,11 +74,22 @@ int main(int argc, char **argv) {
 							}
 							if(system("dpkg --get-selections 2>/dev/null 1>/dev/null")==0){
 								printf("%s%s\n[Debian packages]%s\n",BOLD,GREEN,NORMAL);
-								if(system(" dpkg --get-selections 2>/dev/null")!=0){
+								if(system("dpkg --get-selections 2>/dev/null")!=0){
 									error("dpkg error");
 								}
 							}
-							if(system("rpm -qa 2>/dev/null 1>/dev/null")==0){printf("RedHat packages");}
+							if(system("rpm -qa 2>/dev/null 1>/dev/null")==0){
+								printf("%s%s\n[Redhat packages]%s\n",BOLD,GREEN,NORMAL);
+								if(system("rpm -qa 2>/dev/null")!=0){
+									error("rpm error");
+								}
+							}
+							if(system("rpm -qa 2>/dev/null 1>/dev/null")==0){
+								printf("%s%s\n[Redhat packages]%s\n",BOLD,GREEN,NORMAL);
+								if(system("rpm -qa 2>/dev/null")!=0){
+									error("rpm error");
+								}
+							}
 							if(system("snap list 2>/dev/null 1>/dev/null")==0){printf("Snap packages");}
 							break;
 						case 2:break;
