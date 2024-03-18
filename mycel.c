@@ -90,7 +90,19 @@ int main(int argc, char **argv) {
 									error("rpm error");
 								}
 							}
-							if(system("snap list 2>/dev/null 1>/dev/null")==0){printf("Snap packages");}
+							if(system("snap list 2>/dev/null 1>/dev/null")==0){
+								printf("%s%s\n[Snap packages]%s\n",BOLD,GREEN,NORMAL);
+								if(system("snap list 2>/dev/null")==0){
+									error("snap error");
+								}
+							}
+							if(system("pacman -Qa 2>/dev/null 1>/dev/null")==0){
+								printf("%s%s\n[Pacman packages]%s\n",BOLD,GREEN,NORMAL);
+								if(system("pacman -Qa 2>/dev/null")==0){
+									error("pacman error");
+								}
+							}
+							
 							break;
 						case 2:break;
 						case 3:break;
