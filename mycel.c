@@ -18,9 +18,8 @@ void help(){
 	printf("Enumeration 4: Sensitive Information.\n");
 	printf("Enumeration 5: Network.\n");
 	printf("\n%s%s(Stealth Options):\n%s",BOLD,YELLOW,NORMAL);
-	printf("Stealth 1: No Stealth.\n");
-	printf("Stealth 2: Semi-Stealthy.\n");
-	printf("Stealth 3: Stealthy.\n");
+	printf("Stealth 0: (DEFAULT)No Stealth.\n");
+	printf("Stealth 1: Stealth.\n");
 	printf("%s\n",NORMAL);
 }
 void error(char* errmsg){
@@ -29,10 +28,10 @@ void error(char* errmsg){
 	abort();
 }
 int main(int argc, char **argv) {
-	if(argc < 3){error("Not Enough Flags Provided!");}
+	if(argc < 2){error("Not Enough Flags Provided!");}
 	else{
 		int opt; int e = 0; int s = 0;
-		while ((opt = getopt(argc, argv, "e:s:")) != -1){
+		while ((opt = getopt(argc, argv, "e:s::")) != -1){
 			switch (opt){
 				case 'e':
 					if(atoi(optarg) > 0 && atoi(optarg) <= 4){
@@ -41,7 +40,7 @@ int main(int argc, char **argv) {
 					else{error("Invalid Enumeration Option!");}
 					break;
 				case 's': 
-					if(atoi(optarg) > 0 && atoi(optarg) <= 3){
+					if(atoi(optarg) == 0 || atoi(optarg) == 1){
 						s = atoi(optarg);
 					}
 					else{error("Invalid Stealth Option!");}
@@ -50,14 +49,13 @@ int main(int argc, char **argv) {
 				default:error("You broke something!");break;
 			}
 		}
-		if(e == 0 || s == 0){error("Invalid Flags!");}
+		if(e == 0){error("Invalid Flag!");}
 		else{
 			switch(e){
 				case 1:
 					switch(s){
+						case 0:break;
 						case 1:break;
-						case 2:break;
-						case 3:break;
 						case'?':break;
 						default:break;
 					}
@@ -65,65 +63,34 @@ int main(int argc, char **argv) {
 				
 				case 2:
 					switch(s){
-						case 1:
-							if(system("apt list --installed 2>/dev/null 1>/dev/null")==0){
-								printf("%s%s\n[Apt packages]%s\n",BOLD,GREEN,NORMAL);
-								if(system("apt list --installed 2>/dev/null")!=0){
-									error("apt error");
+						case 0:
+							if(system("dpkg --get-selections | wc -l 1>/dev/null 2>/dev/null") == 0){ 
+								printf("%s%s[Apt installed]%s\n",BOLD,GREEN,NORMAL);
+								if(system("echo \"Packages:\"&& dpkg --get-selections | wc -l 2>/dev/null") != 0){
+									error("dpkg package error");
+								}
+								if(system("echo \"Versions:\"&& dpkg -p 2>/dev/null") != 0){
+									error("dpkg version error");
 								}
 							}
-							if(system("dpkg --get-selections 2>/dev/null 1>/dev/null")==0){
-								printf("%s%s\n[Debian packages]%s\n",BOLD,GREEN,NORMAL);
-								if(system("dpkg --get-selections 2>/dev/null")!=0){
-									error("dpkg error");
-								}
-							}
-							if(system("rpm -qa 2>/dev/null 1>/dev/null")==0){
-								printf("%s%s\n[Redhat packages]%s\n",BOLD,GREEN,NORMAL);
-								if(system("rpm -qa 2>/dev/null")!=0){
-									error("rpm error");
-								}
-							}
-							if(system("rpm -qa 2>/dev/null 1>/dev/null")==0){
-								printf("%s%s\n[Redhat packages]%s\n",BOLD,GREEN,NORMAL);
-								if(system("rpm -qa 2>/dev/null")!=0){
-									error("rpm error");
-								}
-							}
-							if(system("snap list 2>/dev/null 1>/dev/null")==0){
-								printf("%s%s\n[Snap packages]%s\n",BOLD,GREEN,NORMAL);
-								if(system("snap list 2>/dev/null")==0){
-									error("snap error");
-								}
-							}
-							if(system("pacman -Qa 2>/dev/null 1>/dev/null")==0){
-								printf("%s%s\n[Pacman packages]%s\n",BOLD,GREEN,NORMAL);
-								if(system("pacman -Qa 2>/dev/null")==0){
-									error("pacman error");
-								}
-							}
-							
 							break;
-						case 2:break;
-						case 3:break;
+						case 1:break;
 						case'?':break;
 						default:break;
 					}
 					break;
 				case 3:
 					switch(s){
+						case 0:break;
 						case 1:break;
-						case 2:break;
-						case 3:break;
 						case'?':break;
 						default:break;
 					}
 					break;
 				case 4:
 					switch(s){
+						case 0:break;
 						case 1:break;
-						case 2:break;
-						case 3:break;
 						case'?':break;
 						default:break;
 					}
@@ -132,7 +99,7 @@ int main(int argc, char **argv) {
 				default:break;
 			}
 			
-			printf("\n\n\ne:%d,s:%d\n",e,s);
+			printf("\ne:%d,s:%d\n",e,s);
 		}
 	}
   	return 0;
