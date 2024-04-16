@@ -18,6 +18,7 @@ void error(const char *err_msg) {
 	fprintf(stderr, "\033[1m%sERROR:%s\033[0m\n", RED, err_msg);
 	exit(EXIT_FAILURE);
 }
+/*Executes system commands like System() but returns output */
 int sys_cmd(const char *command, char *output) {
 	int pipefd[2];
 	pid_t pid;
@@ -57,6 +58,7 @@ int sys_cmd(const char *command, char *output) {
     	}
  	return -1;
 }
+/*Prints header then runs command (Probably soon to be combined with sys_exec*/
 void *exec_cmd(void *cmd) {
 	char **cmds = (char **)cmd;
     	char output[4096] = {0};
@@ -82,6 +84,7 @@ int main(void) {
 	"cat /etc/*-release && cat /proc/version 2>/dev/null; sleep 1", //OS and Kernel
 	"echo ID=$(id) && for i in $(cut -d':' -f1 /etc/passwd);do id $i;done 2>/dev/null; sleep 1", //IDs and Groups
     	};
+	/*Multithreading*/
 	pthread_t threads[sizeof(commands) / sizeof(commands[0])];
 	size_t i;
 	for (i = 0; i < sizeof(commands) / sizeof(commands[0]); i++) {
