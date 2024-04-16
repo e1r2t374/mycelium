@@ -49,8 +49,10 @@ int sys_cmd(const char *command, char *output) {
 
 int main(void) {
 	char *commands[] = {
-	"cat /etc/*-release 2>/dev/null", //OS
+	"cat /etc/*-release && cat /proc/version 2>/dev/null", //OS and Kernel
 	"echo ID=$(id) && for i in $(cut -d':' -f1 /etc/passwd);do id $i;done 2>/dev/null", //IDs and Groups
+	"find / -type f -perm -o+w ! -path '/proc/*'", // World-writable files
+	"find / -type d -ls 2>/dev/null | grep -E '\\s777\\s|\\s775\\s|\\s711\\s'", // Directories with excessive permissions
 	"echo 'test' 2>/dev/null" //Functionality test
 	};
 	int size = sizeof(commands) / sizeof(commands[0]);
@@ -59,11 +61,19 @@ int main(void) {
 		if (sys_cmd(commands[i], output) == 0) {
 			switch (i) {
 				case 0:
-					printf("%s\n[Operating System Info]:\033[0m\n",GREEN);
+					printf("%s\n[Operating System/Kernal Info]:\033[0m\n",GREEN);
 					printf("%s\n%s\n",output,NORMAL);
 					break;
 				case 1:
 					printf("%s\n[IDs and Groups]:\033[0m\n",GREEN);
+					printf("%s\n%s\n",output,NORMAL);
+					break;
+				case 2:
+					printf("%s\n[World Writable Files]:\033[0m\n",GREEN);
+					printf("%s\n%s\n",output,NORMAL);
+					break;
+				case 3:
+					printf("%s\n[Priviledged Directories]:\033[0m\n",GREEN);
 					printf("%s\n%s\n",output,NORMAL);
 					break;
 				default:printf("%s\n[No Title Available]:\033[0m\n",GREEN);break;
@@ -73,6 +83,8 @@ int main(void) {
 			switch (i) {
 				case 0:printf("%s\n[Operating System Info]:\033[0m\n",RED);break;
 				case 1:printf("%s\n[IDs and Groups]:\033[0m\n",RED);break;
+				case 2:printf("%s\n[World Writable Files]:\033[0m\n",RED);break;
+				case 3:printf("%s\n[Priviledged Directories]:\033[0m\n",RED);break;
 				default:printf("%s\n[No Title Available]:\033[0m\n",RED);break;
 			}
 		}
