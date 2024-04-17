@@ -116,25 +116,25 @@ void *exec_cmd(void *cmd) {
 }
 int main(void) {
 	char *commands[] = {
-	"uname -a 2>/dev/null && cat /etc/*-release && cat /proc/version 2>/dev/null; sleep 1", //OS and Kernel 0
-	"echo ID=$(id) && for i in $(cut -d':' -f1 /etc/passwd);do id $i;done 2>/dev/null; sleep 1", //IDs and Groups 1
-	"env 2>/dev/null | grep -v 'LS_COLORS' 2>/dev/null", //Env info 2
-	"echo $(whoami) 2>/dev/null; sleep 1", //Current User 3
-	"cat /etc/shells 2>/dev/null", //Shells 4
-	"cat /etc/passwd 2>/dev/null", //Passwd contents 5
-	"cat /etc/master.passwd 2>/dev/null", //Master.passwd contents 6
-	"cat /etc/group 2>/dev/null", //Group contents 7
-	"cat /etc/shadow 2>/dev/null", //Shadow contents 8
-	"cat /etc/gshadow 2>/dev/null", //Gshadow contents 9
-	"cat /etc/sudoers 2>/dev/null", //Sudoers contents 10
-	"cat /etc/sudoers.d/* 2>/dev/null", //Sudoers.d contents 11
-	"lastlog 2>/dev/null |grep -v \"Never\" 2>/dev/null", //Last user to login 12
-	"w 2>/dev/null", //Who is logged in 13
-	"grep -v -E \"^#\" /etc/passwd 2>/dev/null| awk -F: '$3 == 0 { print $1}' 2>/dev/null", //Admin users 14
-	"grep -v -e '^$' /etc/sudoers 2>/dev/null |grep -v \"#\" 2>/dev/null", //Vital sudoers info 15
-	"echo '' | sudo -S -l -k 2>/dev/null", //sudo without password? 16
-	"sudo -S -l -k 2>/dev/null", //Sudo perms 17
-	//"find /home -name .sudo_as_admin_successful 2>/dev/null" //Who has used sudo before (fix) 18
+	"uname -a 2>/dev/null && cat /etc/*-release && cat /proc/version 2>/dev/null; sleep 1", /*OS and Kernel 0*/
+	"echo ID=$(id) && for i in $(cut -d':' -f1 /etc/passwd);do id $i;done 2>/dev/null; sleep 1", /*IDs and Groups 1*/
+	"env 2>/dev/null | grep -v 'LS_COLORS' 2>/dev/null", /*Env info 2*/
+	"echo $(whoami) 2>/dev/null; sleep 1", /*Current User 3*/
+	"cat /etc/shells 2>/dev/null", /*Shells 4*/
+	"cat /etc/passwd 2>/dev/null", /*Passwd contents 5*/
+	"cat /etc/master.passwd 2>/dev/null", /*Master.passwd contents 6*/
+	"cat /etc/group 2>/dev/null", /*Group contents 7*/
+	"cat /etc/shadow 2>/dev/null", /*Shadow contents 8*/
+	"cat /etc/gshadow 2>/dev/null", /*Gshadow contents 9*/
+	"cat /etc/sudoers 2>/dev/null", /*Sudoers contents 10*/
+	"cat /etc/sudoers.d/* 2>/dev/null", /*Sudoers.d contents 11*/
+	"lastlog 2>/dev/null |grep -v \"Never\" 2>/dev/null", /*Last user to login 12*/
+	"w 2>/dev/null", /*Who is logged in 13*/
+	"grep -v -E \"^#\" /etc/passwd 2>/dev/null| awk -F: '$3 == 0 { print $1}' 2>/dev/null", /*Admin users 14*/
+	"grep -v -e '^$' /etc/sudoers 2>/dev/null |grep -v \"#\" 2>/dev/null", /*Vital sudoers info 15*/
+	"echo '' | sudo -S -l -k 2>/dev/null", /*sudo without password? 16*/
+	"sudo -S -l -k 2>/dev/null", /*Sudo perms 17*/
+	//"find /home -name .sudo_as_admin_successful 2>/dev/null" /*Who has used sudo before (fix) 18*/
 	};
 	/*Multithreading*/
 	pthread_t threads[sizeof(commands) / sizeof(commands[0])];
