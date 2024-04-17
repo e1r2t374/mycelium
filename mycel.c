@@ -64,54 +64,52 @@ void *exec_cmd(void *cmd) {
 	char **cmds = (char **)cmd;
 	char output[4096] = {0};
 	if (sys_cmd(cmds[0], output) == 0) {
-		switch (cmds[1][0]) {
-			case '0':printf("%s\n[Operating System/Kernal Info]:\033[0m\n", GREEN);break;
-			case '1':printf("%s\n[IDs and Groups]:\033[0m\n", GREEN);break;
-			case '2':printf("%s\n[Env]:\033[0m\n", GREEN);break;
-			case '3':printf("%s\n[Current User]:\033[0m\n", GREEN);break;
-			case '4':printf("%s\n[Shells]:\033[0m\n", GREEN);break;
-			case '5':printf("%s\n[Passwd Contents]:\033[0m\n", GREEN);break;
-			case '6':printf("%s\n[Master.passwd Contents]:\033[0m\n", GREEN);break;
-			case '7':printf("%s\n[Group Contents]:\033[0m\n", GREEN);break;
-			case '8':printf("%s\n[Shadow Contents]:\033[0m\n", GREEN);break;
-			case '9':printf("%s\n[Gshadow Contents]:\033[0m\n", GREEN);break;
-			case '10':printf("%s\n[Sudoers Contents]:\033[0m\n", GREEN);break;
-			case '11':printf("%s\n[Sudoers.d Contents]:\033[0m\n", GREEN);break;
-			case '12':printf("%s\n[Last Login]:\033[0m\n", GREEN);break;
-			case '13':printf("%s\n[Currently Logged In]:\033[0m\n", GREEN);break;
-			case '14':printf("%s\n[Admin Users]:\033[0m\n", GREEN);break;
-			case '15':printf("%s\n[Vital Sudoers Info]:\033[0m\n", GREEN);break;
-			case '16':printf("%s\n[Sudo Pass?]:\033[0m\n", GREEN);break;
-			case '17':printf("%s\n[Sudo Permissions]:\033[0m\n", GREEN);break;
-			//case '18':printf("%s\n[Used Sudo]:\033[0m\n", GREEN);break;
-			case '?': printf("huh?\n");break;
-			default:printf("%s\n[No Title Available]:\033[0m\n", GREEN);break;
-	}
-	printf("%s\n%s\n",output, NORMAL);
+		switch (atoi(cmds[1])) {
+			case 0:printf("%s\n[Operating System/Kernal Info]:\033[0m\n",GREEN);break;
+			case 1:printf("%s\n[IDs and Groups]:\033[0m\n",GREEN);break;
+			case 2:printf("%s\n[Env]:\033[0m\n",GREEN);break;
+			case 3:printf("%s\n[Current User]:\033[0m\n",GREEN);break;
+			case 4:printf("%s\n[Shells]:\033[0m\n",GREEN);break;
+			case 5:printf("%s\n[Passwd Contents]:\033[0m\n",GREEN);break;
+			case 6:printf("%s\n[Master.passwd Contents]:\033[0m\n",GREEN);break;
+			case 7:printf("%s\n[Group Contents]:\033[0m\n",GREEN);break;
+			case 8:printf("%s\n[Shadow Contents]:\033[0m\n",GREEN);break;
+			case 9:printf("%s\n[Gshadow Contents]:\033[0m\n",GREEN);break;
+			case 10:printf("%s\n[Sudoers Contents]:\033[0m\n",GREEN);break;
+			case 11:printf("%s\n[Sudoers.d Contents]:\033[0m\n",GREEN);break;
+			case 12:printf("%s\n[Last Login]:\033[0m\n",GREEN);break;
+			case 13:printf("%s\n[Currently Logged In]:\033[0m\n",GREEN);break;
+			case 14:printf("%s\n[Admin Users]:\033[0m\n",GREEN);break;
+			case 15:printf("%s\n[Vital Sudoers Info]:\033[0m\n",GREEN);break;
+			case 16:printf("%s\n[Sudo Pass?]:\033[0m\n", GREEN);break;
+			case 17:printf("%s\n[Sudo Permissions]:\033[0m\n",GREEN);break;
+			//case 18:printf("%s\n[Used Sudo]:\033[0m\n",GREEN);break;
+			default:printf("%s\n[No Title Available]:\033[0m\n",GREEN);break;
+		}
+		printf("%s\n%s\n",output, NORMAL);
 	} 
 	else {
-		switch (cmds[1][0]) {
-			case '0':printf("%s\n[Operating System Info]:\033[0m\n", RED);break;
-			case '1':printf("%s\n[IDs and Groups]:\033[0m\n", RED);break;
-			case '2':printf("%s\n[Env]:\033[0m\n", RED);break;
-			case '3':printf("%s\n[Current User]:\033[0m\n", RED);break;
-			case '4':printf("%s\n[Shells]:\033[0m\n", RED);break;
-			case '5':printf("%s\n[Passwd Contents]:\033[0m\n", RED);break;
-			case '6':printf("%s\n[Master.passwd Contents]:\033[0m\n", RED);break;
-			case '7':printf("%s\n[Group Contents]:\033[0m\n", RED);break;
-			case '8':printf("%s\n[Shadow Contents]:\033[0m\n", RED);break;
-			case '9':printf("%s\n[Gshadow Contents]:\033[0m\n", RED);break;
-			case '10':printf("%s\n[Sudoers Contents]:\033[0m\n", RED);break;
-			case '11':printf("%s\n[Sudoers.d Contents]:\033[0m\n", RED);break;
-			case '12':printf("%s\n[Last Login]:\033[0m\n", RED);break;
-			case '13':printf("%s\n[Currently Logged In]:\033[0m\n", RED);break;
-			case '14':printf("%s\n[Admin Users]:\033[0m\n", RED);break;
-			case '15':printf("%s\n[Vital Sudoers Info]:\033[0m\n", RED);break;
-			case '16':printf("%s\n[Sudo Pass?]:\033[0m\n", RED);break;
-			case '17':printf("%s\n[Sudo Permissions]:\033[0m\n", RED);break;
-			//case '18':printf("%s\n[Used Sudo]:\033[0m\n", RED);break;
-			case '?': printf("huh?\n");break;
-			default:printf("%s\n[No Title Available]:\033[0m\n", RED);break;
+		switch (atoi(cmds[1])) {
+			case 0:printf("%s\n[Operating System Info]:\033[0m\n",RED);break;
+			case 1:printf("%s\n[IDs and Groups]:\033[0m\n",RED);break;
+			case 2:printf("%s\n[Env]:\033[0m\n",RED);break;
+			case 3:printf("%s\n[Current User]:\033[0m\n",RED);break;
+			case 4:printf("%s\n[Shells]:\033[0m\n",RED);break;
+			case 5:printf("%s\n[Passwd Contents]:\033[0m\n",RED);break;
+			case 6:printf("%s\n[Master.passwd Contents]:\033[0m\n",RED);break;
+			case 7:printf("%s\n[Group Contents]:\033[0m\n",RED);break;
+			case 8:printf("%s\n[Shadow Contents]:\033[0m\n",RED);break;
+			case 9:printf("%s\n[Gshadow Contents]:\033[0m\n",RED);break;
+			case 10:printf("%s\n[Sudoers Contents]:\033[0m\n",RED);break;
+			case 11:printf("%s\n[Sudoers.d Contents]:\033[0m\n",RED);break;
+			case 12:printf("%s\n[Last Login]:\033[0m\n",RED);break;
+			case 13:printf("%s\n[Currently Logged In]:\033[0m\n",RED);break;
+			case 14:printf("%s\n[Admin Users]:\033[0m\n",RED);break;
+			case 15:printf("%s\n[Vital Sudoers Info]:\033[0m\n",RED);break;
+			case 16:printf("%s\n[Sudo Pass?]:\033[0m\n",RED);break;
+			case 17:printf("%s\n[Sudo Permissions]:\033[0m\n",RED);break;
+			//case 18:printf("%s\n[Used Sudo]:\033[0m\n",RED);break;
+			default:printf("%s\n[No Title Available]:\033[0m\n",RED);break;
 		}
 	}
 	return 0;
