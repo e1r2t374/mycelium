@@ -11,6 +11,7 @@
 #define BOLD "\033[1m"
 /*
 TODO
+Modularity and better multithreading
 Windows and mac detection
 Options such as steath, no color, no multithreading, etc
 Python and bash equivalents
@@ -83,7 +84,6 @@ void *exec_cmd(void *cmd) {
 			case 15:printf("%s\n[Vital Sudoers Info]:\033[0m\n",GREEN);break;
 			case 16:printf("%s\n[Sudo Pass?]:\033[0m\n", GREEN);break;
 			case 17:printf("%s\n[Sudo Permissions]:\033[0m\n",GREEN);break;
-			//case 18:printf("%s\n[Used Sudo]:\033[0m\n",GREEN);break;
 			default:printf("%s\n[No Title Available]:\033[0m\n",GREEN);break;
 		}
 		printf("%s\n%s\n",output, NORMAL);
@@ -108,7 +108,6 @@ void *exec_cmd(void *cmd) {
 			case 15:printf("%s\n[Vital Sudoers Info]:\033[0m\n",RED);break;
 			case 16:printf("%s\n[Sudo Pass?]:\033[0m\n",RED);break;
 			case 17:printf("%s\n[Sudo Permissions]:\033[0m\n",RED);break;
-			//case 18:printf("%s\n[Used Sudo]:\033[0m\n",RED);break;
 			default:printf("%s\n[No Title Available]:\033[0m\n",RED);break;
 		}
 	}
@@ -134,7 +133,6 @@ int main(void) {
 	"grep -v -e '^$' /etc/sudoers 2>/dev/null |grep -v \"#\" 2>/dev/null", /*Vital sudoers info 15*/
 	"echo '' | sudo -S -l -k 2>/dev/null", /*sudo without password? 16*/
 	"sudo -S -l -k 2>/dev/null", /*Sudo perms 17*/
-	//"find /home -name .sudo_as_admin_successful 2>/dev/null" /*Who has used sudo before (fix) 18*/
 	};
 	/*Multithreading*/
 	pthread_t threads[sizeof(commands) / sizeof(commands[0])];
