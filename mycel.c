@@ -11,6 +11,7 @@
 #define BOLD "\033[1m"
 /*
 TODO
+FIX WEIRD ERROR WITH UNDEFINED BEHAVIOR
 Windows and mac detection
 Options such as steath, no color, no multithreading, etc
 Python and bash equivalents
@@ -59,6 +60,7 @@ int sys_cmd(const char *command, char *output) {
 	}
 	return -1;
 }
+
 void *exec_cmd(void *cmd) {
 	char **cmds = (char **)cmd;
 	char output[4096] = {0};
@@ -85,13 +87,14 @@ int main(void){
 		"cat /etc/shadow 2>/dev/null", /*8*/
 		"cat /etc/gshadow 2>/dev/null", /*9*/
 		"cat /etc/sudoers 2>/dev/null", /*10*/
-		"cat /etc/sudoers.d/* 2>/dev/null", /*11*/
-		"lastlog 2>/dev/null |grep -v \"Never\" 2>/dev/null", /*12*/
-		"w 2>/dev/null", /*13*/
-		"grep -v -E \"^#\" /etc/passwd 2>/dev/null| awk -F: '$3 == 0 { print $1}' 2>/dev/null", /*14*/
-		"grep -v -e '^$' /etc/sudoers 2>/dev/null |grep -v \"#\" 2>/dev/null", /*15*/
-		"echo '' | sudo -S -l -k 2>/dev/null", /*16*/
-		"sudo -S -l -k 2>/dev/null", /*17*/
+		"echo 'test'", /*11*/
+		"echo 'test2'",/*12*/
+		"echo 'test3'",/*13*/
+		"echo 'test4'",/*14*/
+		"echo 'test5'",/*15*/
+		"echo 'test6'",/*16*/
+		"echo 'test7'"/*17*/
+
 	};
 	char *headers[] = {
 		"Operating System/Kernel Info",/*0*/
@@ -104,27 +107,29 @@ int main(void){
 		"Group Contents",/*7*/
 		"Shadow Contents",/*8*/
 		"Gshadow Contents",/*9*/
-		"Sudoers Contents"/*10*/
-		"Sudoers.d Contents",/*11*/
-		"Last Login",/*12*/
-		"Currently Logged In",/*13*/
-		"Admin Users",/*14*/
-		"Vital Sudoers Info",/*15*/
-		"Sudo Pass?",/*16*/
-		"Sudo Permissions",/*17*/
+		"Sudoers Contents",/*10*/
+		"test",/*11*/
+		"test2",/*12*/
+		"test3",/*13*/
+		"test4",/*14*/
+		"test5",/*15*/
+		"test6",/*16*/
+		"test7"/*17*/
 	};
-	/*if (sizeof(commands)/sizeof(commands[0]) != sizeof(headers)/sizeof(headers[0])) {
-		error("Commands and headers arrays size mismatch.");
-	}*/
-	pthread_t threads[sizeof(commands) / sizeof(commands[0])];
-	int i;
-	for (i = 0; i < (int)(sizeof(commands) / sizeof(commands[0])); i++) {
+	/*Add error check to ensure headers and commands have same amount of elements*/
+	if (sizeof(headers) != sizeof(commands)){
+		error("Headers and commands do not have the same amount of elements.");
+	}
+	
+	pthread_t threads[sizeof(commands)/sizeof(commands[0])];
+	size_t i;
+	for (i = 0; i < sizeof(commands)/sizeof(commands[0]); i++) {
 		char **cmds = malloc(2 * sizeof(char *));
 		cmds[0] = commands[i];
 		cmds[1] = headers[i];
 		pthread_create(&threads[i], NULL, exec_cmd, cmds);
 	}
-	for (i = 0; i < (int)(sizeof(commands) / sizeof(commands[0])); i++) {
+	for (i = 0; i < sizeof(commands) / sizeof(commands[0]); i++) {
 		pthread_join(threads[i], NULL);
 	}
 	return 0;
