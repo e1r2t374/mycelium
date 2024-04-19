@@ -4,6 +4,8 @@
 #include <unistd.h>
 #include <sys/wait.h>
 #include <pthread.h>
+#include <sys/types.h>
+
 #define RED "\033[38;2;230;0;0m"
 #define YELLOW "\033[38;2;200;200;0m"
 #define GREEN "\033[38;2;0;150;0m"
@@ -11,7 +13,7 @@
 #define BOLD "\033[1m"
 /*
 TODO
-FIX WEIRD ERROR WITH UNDEFINED BEHAVIOR
+Print command with header
 Windows and mac detection
 Options such as steath, no color, no multithreading, etc
 Python and bash equivalents
@@ -77,7 +79,7 @@ void *exec_cmd(void *cmd) {
 int main(void){
 	char *commands[] = {
 		"uname -a ||: && (cat /etc/*-release ||: && (cat /proc/version; sleep 1 ||:)) 2>/dev/null", /*0*/
-		"echo ID=$(id) && for i in $(cut -d':' -f1 /etc/passwd);do id $i;done 2>/dev/null; sleep 1", /*1*/
+		"echo ID=$(id) && for i in $(cut -d':' -f1 /etc/passwd);do id $i;done; 2>/dev/null sleep 1  2>/dev/null", /*1*/
 		"env 2>/dev/null | grep -v 'LS_COLORS' 2>/dev/null", /*2*/
 		"echo $(whoami) 2>/dev/null; sleep 1", /*3*/
 		"cat /etc/shells 2>/dev/null", /*4*/
@@ -85,7 +87,7 @@ int main(void){
 		"cat /etc/master.passwd 2>/dev/null", /*6*/
 		"cat /etc/group 2>/dev/null", /*7*/
 		"cat /etc/shadow 2>/dev/null", /*8*/
-		"cat /etc/gshadow 2>/dev/null", /*9*/
+		//"cat /etc/gshadow 2>/dev/null", /*9*/
 		"cat /etc/sudoers 2>/dev/null", /*10*/
 		"cat /etc/profile 2>/dev/null", /*11*/
 		"cat /etc/bashrc 2>/dev/null", /*12*/
@@ -106,7 +108,7 @@ int main(void){
 		"Master.passwd Contents",/*6*/
 		"Group Contents",/*7*/
 		"Shadow Contents",/*8*/
-		"Gshadow Contents",/*9*/
+		//"Gshadow Contents"/*9*/
 		"Sudoers Contents",/*10*/
 		"etc/profile Contents",/*11*/
 		"etc/bashrc Contents",/*12*/
@@ -117,9 +119,7 @@ int main(void){
 		"/usr/bin and /sbin Contents", /*17*/
 		"Installed Packages", /*18*/
 	};
-	if (sizeof(headers) != sizeof(commands)){
-		error("Headers and commands do not have the same amount of elements.");
-	}
+	
 	pthread_t threads[sizeof(commands)/sizeof(commands[0])];
 	size_t i;
 	for (i = 0; i < sizeof(commands)/sizeof(commands[0]); i++) {
