@@ -113,6 +113,7 @@ int main(void){
 		"Sudo Pass?",/*16*/
 		"Sudo Permissions",/*17*/
 	};
+	/*ADD length check to ensure headers and commands arrays are same size*/
 	pthread_t threads[sizeof(commands) / sizeof(commands[0])];
 	int i;
 	for (i = 0; i < (int)(sizeof(commands) / sizeof(commands[0])); i++) {
