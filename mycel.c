@@ -94,7 +94,7 @@ int main(void){
 		"cat ~/.bash_logout 2>/dev/null", /*15*/
 		"cat /etc/services 2>/dev/null", /*16*/
 		"ls -alh /usr/bin/ 2>/dev/null && ls -alh /sbin/ 2>/dev/null", /*17*/
-		"dpkg --get-selections ||: && (rpm -qa ||: && (pacman -Qa ||:)) 2>/dev/null", /*18*/
+		"dpkg --get-selections||:&&(rpm -qa||:&&(pacman -Q||:&&(ls -alh /var/cache/yum/||:&&(ls -alh /var/cache/apt/archivesO||:)))) 2>/dev/null", /*18*/
 	};
 	char *headers[] = {
 		"Operating System/Kernel Info",/*0*/
