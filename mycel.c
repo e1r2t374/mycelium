@@ -87,7 +87,7 @@ int main(void){
 		"cat /etc/master.passwd 2>/dev/null", /*6*/
 		"cat /etc/group 2>/dev/null", /*7*/
 		"cat /etc/shadow 2>/dev/null", /*8*/
-		//"cat /etc/gshadow 2>/dev/null", /*9*/
+		"cat /etc/gshadow 2>/dev/null", /*9*/
 		"cat /etc/sudoers 2>/dev/null", /*10*/
 		"cat /etc/profile 2>/dev/null", /*11*/
 		"cat /etc/bashrc 2>/dev/null", /*12*/
@@ -108,7 +108,7 @@ int main(void){
 		"Master.passwd Contents",/*6*/
 		"Group Contents",/*7*/
 		"Shadow Contents",/*8*/
-		//"Gshadow Contents"/*9*/
+		"Gshadow Contents",/*9*/
 		"Sudoers Contents",/*10*/
 		"etc/profile Contents",/*11*/
 		"etc/bashrc Contents",/*12*/
@@ -120,7 +120,7 @@ int main(void){
 		"Installed Packages", /*18*/
 	};
 	if(sizeof(commands) != sizeof(headers)){
-		error("Command and header arrays are not the same size (or buggy command).");
+		error("Command and header arrays do not have the same number of elements.");
 	}
 	pthread_t threads[sizeof(commands)/sizeof(commands[0])];
 	size_t i;
