@@ -76,7 +76,7 @@ void *exec_cmd(void *cmd) {
 }
 int main(void){
 	char *commands[] = {
-		"uname -a 2>/dev/null && cat /etc/*-release && cat /proc/version 2>/dev/null; sleep 1", /*0*/
+		"uname -a ||: && (cat /etc/*-release ||: && (cat /proc/version; sleep 1 ||:)) 2>/dev/null", /*0*/
 		"echo ID=$(id) && for i in $(cut -d':' -f1 /etc/passwd);do id $i;done 2>/dev/null; sleep 1", /*1*/
 		"env 2>/dev/null | grep -v 'LS_COLORS' 2>/dev/null", /*2*/
 		"echo $(whoami) 2>/dev/null; sleep 1", /*3*/
@@ -87,14 +87,14 @@ int main(void){
 		"cat /etc/shadow 2>/dev/null", /*8*/
 		"cat /etc/gshadow 2>/dev/null", /*9*/
 		"cat /etc/sudoers 2>/dev/null", /*10*/
-		"echo 'test'", /*11*/
-		"echo 'test2'",/*12*/
-		"echo 'test3'",/*13*/
-		"echo 'test4'",/*14*/
-		"echo 'test5'",/*15*/
-		"echo 'test6'",/*16*/
-		"echo 'test7'"/*17*/
-
+		"cat /etc/profile 2>/dev/null", /*11*/
+		"cat /etc/bashrc 2>/dev/null", /*12*/
+		"cat ~/.bash_profile 2>/dev/null", /*13*/
+		"cat ~/.bashrc 2>/dev/null", /*14*/
+		"cat ~/.bash_logout 2>/dev/null", /*15*/
+		"cat /etc/services 2>/dev/null", /*16*/
+		"ls -alh /usr/bin/ 2>/dev/null && ls -alh /sbin/ 2>/dev/null", /*17*/
+		"dpkg --get-selections ||: && (rpm -qa ||: && (pacman -Qa ||:)) 2>/dev/null", /*18*/
 	};
 	char *headers[] = {
 		"Operating System/Kernel Info",/*0*/
@@ -108,13 +108,14 @@ int main(void){
 		"Shadow Contents",/*8*/
 		"Gshadow Contents",/*9*/
 		"Sudoers Contents",/*10*/
-		"test",/*11*/
-		"test2",/*12*/
-		"test3",/*13*/
-		"test4",/*14*/
-		"test5",/*15*/
-		"test6",/*16*/
-		"test7"/*17*/
+		"etc/profile Contents",/*11*/
+		"etc/bashrc Contents",/*12*/
+		".bash_profile Contents",/*13*/
+		".bashrc Contents", /*14*/
+		".bash_logout Contents", /*15*/
+		"etc/services Contents", /*16*/
+		"/usr/bin and /sbin Contents", /*17*/
+		"Installed Packages", /*18*/
 	};
 	if (sizeof(headers) != sizeof(commands)){
 		error("Headers and commands do not have the same amount of elements.");
