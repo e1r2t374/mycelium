@@ -11,7 +11,6 @@
 #define BOLD "\033[1m"
 /*
 TODO
-Modularity and better multithreading
 Windows and mac detection
 Options such as steath, no color, no multithreading, etc
 Python and bash equivalents
@@ -60,91 +59,69 @@ int sys_cmd(const char *command, char *output) {
 	}
 	return -1;
 }
-/*Prints header then runs command (Probably soon to be combined with sys_exec*/
 void *exec_cmd(void *cmd) {
 	char **cmds = (char **)cmd;
 	char output[4096] = {0};
 	if (sys_cmd(cmds[0], output) == 0) {
-		switch (atoi(cmds[1])) {
-			case 0:printf("%s\n[Operating System/Kernal Info]:\033[0m\n",GREEN);break;
-			case 1:printf("%s\n[IDs and Groups]:\033[0m\n",GREEN);break;
-			case 2:printf("%s\n[Env]:\033[0m\n",GREEN);break;
-			case 3:printf("%s\n[Current User]:\033[0m\n",GREEN);break;
-			case 4:printf("%s\n[Shells]:\033[0m\n",GREEN);break;
-			case 5:printf("%s\n[Passwd Contents]:\033[0m\n",GREEN);break;
-			case 6:printf("%s\n[Master.passwd Contents]:\033[0m\n",GREEN);break;
-			case 7:printf("%s\n[Group Contents]:\033[0m\n",GREEN);break;
-			case 8:printf("%s\n[Shadow Contents]:\033[0m\n",GREEN);break;
-			case 9:printf("%s\n[Gshadow Contents]:\033[0m\n",GREEN);break;
-			case 10:printf("%s\n[Sudoers Contents]:\033[0m\n",GREEN);break;
-			case 11:printf("%s\n[Sudoers.d Contents]:\033[0m\n",GREEN);break;
-			case 12:printf("%s\n[Last Login]:\033[0m\n",GREEN);break;
-			case 13:printf("%s\n[Currently Logged In]:\033[0m\n",GREEN);break;
-			case 14:printf("%s\n[Admin Users]:\033[0m\n",GREEN);break;
-			case 15:printf("%s\n[Vital Sudoers Info]:\033[0m\n",GREEN);break;
-			case 16:printf("%s\n[Sudo Pass?]:\033[0m\n", GREEN);break;
-			case 17:printf("%s\n[Sudo Permissions]:\033[0m\n",GREEN);break;
-			default:printf("%s\n[No Title Available]:\033[0m\n",GREEN);break;
-		}
-		printf("%s\n%s\n",output, NORMAL);
+		printf("%s%s:\033[0m\n", GREEN, cmds[1]);
+		printf("%s\n%s\n", output, NORMAL);
 	} 
 	else {
-		switch (atoi(cmds[1])) {
-			case 0:printf("%s\n[Operating System Info]:\033[0m\n",RED);break;
-			case 1:printf("%s\n[IDs and Groups]:\033[0m\n",RED);break;
-			case 2:printf("%s\n[Env]:\033[0m\n",RED);break;
-			case 3:printf("%s\n[Current User]:\033[0m\n",RED);break;
-			case 4:printf("%s\n[Shells]:\033[0m\n",RED);break;
-			case 5:printf("%s\n[Passwd Contents]:\033[0m\n",RED);break;
-			case 6:printf("%s\n[Master.passwd Contents]:\033[0m\n",RED);break;
-			case 7:printf("%s\n[Group Contents]:\033[0m\n",RED);break;
-			case 8:printf("%s\n[Shadow Contents]:\033[0m\n",RED);break;
-			case 9:printf("%s\n[Gshadow Contents]:\033[0m\n",RED);break;
-			case 10:printf("%s\n[Sudoers Contents]:\033[0m\n",RED);break;
-			case 11:printf("%s\n[Sudoers.d Contents]:\033[0m\n",RED);break;
-			case 12:printf("%s\n[Last Login]:\033[0m\n",RED);break;
-			case 13:printf("%s\n[Currently Logged In]:\033[0m\n",RED);break;
-			case 14:printf("%s\n[Admin Users]:\033[0m\n",RED);break;
-			case 15:printf("%s\n[Vital Sudoers Info]:\033[0m\n",RED);break;
-			case 16:printf("%s\n[Sudo Pass?]:\033[0m\n",RED);break;
-			case 17:printf("%s\n[Sudo Permissions]:\033[0m\n",RED);break;
-			default:printf("%s\n[No Title Available]:\033[0m\n",RED);break;
-		}
+		printf("%s%s:\033[0m\n", RED, cmds[1]);
+		printf("%s\n%s\n", output, NORMAL);
 	}
 	return 0;
 }
-int main(void) {
+int main(void){
 	char *commands[] = {
-	"uname -a 2>/dev/null && cat /etc/*-release && cat /proc/version 2>/dev/null; sleep 1", /*OS and Kernel 0*/
-	"echo ID=$(id) && for i in $(cut -d':' -f1 /etc/passwd);do id $i;done 2>/dev/null; sleep 1", /*IDs and Groups 1*/
-	"env 2>/dev/null | grep -v 'LS_COLORS' 2>/dev/null", /*Env info 2*/
-	"echo $(whoami) 2>/dev/null; sleep 1", /*Current User 3*/
-	"cat /etc/shells 2>/dev/null", /*Shells 4*/
-	"cat /etc/passwd 2>/dev/null", /*Passwd contents 5*/
-	"cat /etc/master.passwd 2>/dev/null", /*Master.passwd contents 6*/
-	"cat /etc/group 2>/dev/null", /*Group contents 7*/
-	"cat /etc/shadow 2>/dev/null", /*Shadow contents 8*/
-	"cat /etc/gshadow 2>/dev/null", /*Gshadow contents 9*/
-	"cat /etc/sudoers 2>/dev/null", /*Sudoers contents 10*/
-	"cat /etc/sudoers.d/* 2>/dev/null", /*Sudoers.d contents 11*/
-	"lastlog 2>/dev/null |grep -v \"Never\" 2>/dev/null", /*Last user to login 12*/
-	"w 2>/dev/null", /*Who is logged in 13*/
-	"grep -v -E \"^#\" /etc/passwd 2>/dev/null| awk -F: '$3 == 0 { print $1}' 2>/dev/null", /*Admin users 14*/
-	"grep -v -e '^$' /etc/sudoers 2>/dev/null |grep -v \"#\" 2>/dev/null", /*Vital sudoers info 15*/
-	"echo '' | sudo -S -l -k 2>/dev/null", /*sudo without password? 16*/
-	"sudo -S -l -k 2>/dev/null", /*Sudo perms 17*/
+		"uname -a 2>/dev/null && cat /etc/*-release && cat /proc/version 2>/dev/null; sleep 1", /*0*/
+		"echo ID=$(id) && for i in $(cut -d':' -f1 /etc/passwd);do id $i;done 2>/dev/null; sleep 1", /*1*/
+		"env 2>/dev/null | grep -v 'LS_COLORS' 2>/dev/null", /*2*/
+		"echo $(whoami) 2>/dev/null; sleep 1", /*3*/
+		"cat /etc/shells 2>/dev/null", /*4*/
+		"cat /etc/passwd 2>/dev/null", /*5*/
+		"cat /etc/master.passwd 2>/dev/null", /*6*/
+		"cat /etc/group 2>/dev/null", /*7*/
+		"cat /etc/shadow 2>/dev/null", /*8*/
+		"cat /etc/gshadow 2>/dev/null", /*9*/
+		"cat /etc/sudoers 2>/dev/null", /*10*/
+		"cat /etc/sudoers.d/* 2>/dev/null", /*11*/
+		"lastlog 2>/dev/null |grep -v \"Never\" 2>/dev/null", /*12*/
+		"w 2>/dev/null", /*13*/
+		"grep -v -E \"^#\" /etc/passwd 2>/dev/null| awk -F: '$3 == 0 { print $1}' 2>/dev/null", /*14*/
+		"grep -v -e '^$' /etc/sudoers 2>/dev/null |grep -v \"#\" 2>/dev/null", /*15*/
+		"echo '' | sudo -S -l -k 2>/dev/null", /*16*/
+		"sudo -S -l -k 2>/dev/null", /*17*/
 	};
-	/*Multithreading*/
+	char *headers[] = {
+		"Operating System/Kernel Info",/*0*/
+		"IDs and Groups",/*1*/
+		"Env",/*2*/
+		"Current User",/*3*/
+		"Shells",/*4*/
+		"Passwd Contents",/*5*/
+		"Master.passwd Contents",/*6*/
+		"Group Contents",/*7*/
+		"Shadow Contents",/*8*/
+		"Gshadow Contents",/*9*/
+		"Sudoers Contents"/*10*/
+		"Sudoers.d Contents",/*11*/
+		"Last Login",/*12*/
+		"Currently Logged In",/*13*/
+		"Admin Users",/*14*/
+		"Vital Sudoers Info",/*15*/
+		"Sudo Pass?",/*16*/
+		"Sudo Permissions",/*17*/
+	};
 	pthread_t threads[sizeof(commands) / sizeof(commands[0])];
 	int i;
 	for (i = 0; i < (int)(sizeof(commands) / sizeof(commands[0])); i++) {
-		char **cmds = malloc((int)(sizeof(commands)/sizeof(commands[0])) * sizeof(char *));
+		char **cmds = malloc(2 * sizeof(char *));
 		cmds[0] = commands[i];
-		cmds[1] = malloc((int)(sizeof(commands)/sizeof(commands[0])) * sizeof(char));
-		sprintf(cmds[1], "%d", i);
+		cmds[1] = headers[i];
 		pthread_create(&threads[i], NULL, exec_cmd, cmds);
 	}
-	for (i = 0; i < (int)(sizeof(commands)/sizeof(commands[0])); i++) {
+	for (i = 0; i < (int)(sizeof(commands) / sizeof(commands[0])); i++) {
 		pthread_join(threads[i], NULL);
 	}
 	return 0;
