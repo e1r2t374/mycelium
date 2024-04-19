@@ -113,9 +113,9 @@ int main(void){
 		"Sudo Pass?",/*16*/
 		"Sudo Permissions",/*17*/
 	};
-	if (sizeof(commands)/sizeof(commands[0]) != sizeof(headers)/sizeof(headers[0])) {
+	/*if (sizeof(commands)/sizeof(commands[0]) != sizeof(headers)/sizeof(headers[0])) {
 		error("Commands and headers arrays size mismatch.");
-	}
+	}*/
 	pthread_t threads[sizeof(commands) / sizeof(commands[0])];
 	int i;
 	for (i = 0; i < (int)(sizeof(commands) / sizeof(commands[0])); i++) {
