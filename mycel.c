@@ -116,11 +116,9 @@ int main(void){
 		"test6",/*16*/
 		"test7"/*17*/
 	};
-	/*Add error check to ensure headers and commands have same amount of elements*/
 	if (sizeof(headers) != sizeof(commands)){
 		error("Headers and commands do not have the same amount of elements.");
 	}
-	
 	pthread_t threads[sizeof(commands)/sizeof(commands[0])];
 	size_t i;
 	for (i = 0; i < sizeof(commands)/sizeof(commands[0]); i++) {
