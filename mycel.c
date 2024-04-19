@@ -119,7 +119,9 @@ int main(void){
 		"/usr/bin and /sbin Contents", /*17*/
 		"Installed Packages", /*18*/
 	};
-	
+	if(sizeof(commands) != sizeof(headers)){
+		error("Command and header arrays are not the same size (or buggy command).");
+	}
 	pthread_t threads[sizeof(commands)/sizeof(commands[0])];
 	size_t i;
 	for (i = 0; i < sizeof(commands)/sizeof(commands[0]); i++) {
