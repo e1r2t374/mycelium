@@ -13,10 +13,9 @@
 #define BOLD "\033[1m"
 /*
 TODO
-Print command with header
-Windows and mac detection
-Options such as steath, no color, no multithreading, etc
-Python and bash equivalents
+-Print command with header
+-Windows and mac detection
+-Options such as steath, no color, no multithreading, etc
 */
 void error(const char *err_msg) {
 	fprintf(stderr, "\033[1m%sERROR:%s\033[0m\n", RED, err_msg);
@@ -77,47 +76,47 @@ void *exec_cmd(void *cmd) {
 	return 0;
 }
 int main(void){
-	char *commands[] = {
-		"uname -a ||: && (cat /etc/*-release ||: && (cat /proc/version; sleep 1 ||:)) 2>/dev/null", /*0*/
-		"echo ID=$(id) && for i in $(cut -d':' -f1 /etc/passwd);do id $i;done; 2>/dev/null sleep 1  2>/dev/null", /*1*/
-		"env 2>/dev/null | grep -v 'LS_COLORS' 2>/dev/null", /*2*/
-		"echo $(whoami) 2>/dev/null; sleep 1", /*3*/
-		"cat /etc/shells 2>/dev/null", /*4*/
-		"cat /etc/passwd 2>/dev/null", /*5*/
-		"cat /etc/master.passwd 2>/dev/null", /*6*/
-		"cat /etc/group 2>/dev/null", /*7*/
-		"cat /etc/shadow 2>/dev/null", /*8*/
-		"cat /etc/gshadow 2>/dev/null", /*9*/
-		"cat /etc/sudoers 2>/dev/null", /*10*/
-		"cat /etc/profile 2>/dev/null", /*11*/
-		"cat /etc/bashrc 2>/dev/null", /*12*/
-		"cat ~/.bash_profile 2>/dev/null", /*13*/
-		"cat ~/.bashrc 2>/dev/null", /*14*/
-		"cat ~/.bash_logout 2>/dev/null", /*15*/
-		"cat /etc/services 2>/dev/null", /*16*/
-		"ls -alh /usr/bin/ 2>/dev/null && ls -alh /sbin/ 2>/dev/null", /*17*/
-		"dpkg --get-selections||:&&(rpm -qa||:&&(pacman -Q||:&&(ls -alh /var/cache/yum/||:&&(ls -alh /var/cache/apt/archivesO||:)))) 2>/dev/null", /*18*/
+	char *commands[] = { /*Add your commands to the array (Don't forget to add a matching header text)*/
+		"uname -a ||: && (cat /etc/*-release ||: && (cat /proc/version; sleep 1 ||:)) 2>/dev/null",
+		"echo ID=$(id) && for i in $(cut -d':' -f1 /etc/passwd);do id $i;done; 2>/dev/null sleep 1  2>/dev/null",
+		"env 2>/dev/null | grep -v 'LS_COLORS' 2>/dev/null",
+		"echo $(whoami) 2>/dev/null; sleep 1",
+		"cat /etc/shells 2>/dev/null",
+		"cat /etc/passwd 2>/dev/null",
+		"cat /etc/master.passwd 2>/dev/null",
+		"cat /etc/group 2>/dev/null",
+		"cat /etc/shadow 2>/dev/null",
+		"cat /etc/gshadow 2>/dev/null",
+		"cat /etc/sudoers 2>/dev/null",
+		"cat /etc/profile 2>/dev/null",
+		"cat /etc/bashrc 2>/dev/null",
+		"cat ~/.bash_profile 2>/dev/null",
+		"cat ~/.bashrc 2>/dev/null",
+		"cat ~/.bash_logout 2>/dev/null",
+		"cat /etc/services 2>/dev/null",
+		"ls -alh /usr/bin/ 2>/dev/null && ls -alh /sbin/ 2>/dev/null",
+		"dpkg --get-selections||:&&(rpm -qa||:&&(pacman -Q||:&&(ls -alh /var/cache/yum/||:&&(ls -alh /var/cache/apt/archivesO||:)))) 2>/dev/null",
 	};
-	char *headers[] = {
-		"Operating System/Kernel Info",/*0*/
-		"IDs and Groups",/*1*/
-		"Env",/*2*/
-		"Current User",/*3*/
-		"Shells",/*4*/
-		"Passwd Contents",/*5*/
-		"Master.passwd Contents",/*6*/
-		"Group Contents",/*7*/
-		"Shadow Contents",/*8*/
-		"Gshadow Contents",/*9*/
-		"Sudoers Contents",/*10*/
-		"etc/profile Contents",/*11*/
-		"etc/bashrc Contents",/*12*/
-		".bash_profile Contents",/*13*/
-		".bashrc Contents", /*14*/
-		".bash_logout Contents", /*15*/
-		"etc/services Contents", /*16*/
-		"/usr/bin and /sbin Contents", /*17*/
-		"Installed Packages", /*18*/
+	char *headers[] = { /*The titles of the commands*/
+		"Operating System/Kernel Info",
+		"IDs and Groups",
+		"Env",
+		"Current User",
+		"Shells",
+		"Passwd Contents",
+		"Master.passwd Contents",
+		"Group Contents",
+		"Shadow Contents",
+		"Gshadow Contents",
+		"Sudoers Contents",
+		"etc/profile Contents",
+		"etc/bashrc Contents",
+		".bash_profile Contents",
+		".bashrc Contents",
+		".bash_logout Contents",
+		"etc/services Contents",
+		"/usr/bin and /sbin Contents",
+		"Installed Packages",
 	};
 	if(sizeof(commands) != sizeof(headers)){
 		error("Command and header arrays do not have the same number of elements.");
