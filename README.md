@@ -10,7 +10,7 @@ Mycelium is an enumerator designed to provide efficient and reliable system anal
 - **Linux Compatibility:** Compatible with various linux distributions for seamless integration into your environment.
 
 **[Usage]:**
-- Compile: _make mycel.c_
+- Compile: _make_
 - Compile with debug data: _debug mycel.c_
 
 **[Contributing]:**
