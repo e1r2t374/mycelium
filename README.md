@@ -2,7 +2,7 @@
 
 Mycelium is an enumerator designed to provide efficient and reliable system analysis on Linux platforms (soon windows and mac). Build in the C programming language, it harnesses the power of multithreading for each command to ensure lightning-fast performace while remaining lightweight and heavily customizable.
 
-![Img1]("https://iili.io/JSDOGrg.png")
+![img1](https://github.com/e1r2t374/mycelium/assets/79590178/ca8a66ea-e981-4a32-b8c6-78c7df30aa64)
 
 **[Key Features]:**
 
