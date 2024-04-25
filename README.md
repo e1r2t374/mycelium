@@ -11,7 +11,7 @@ Mycelium is an enumerator designed to provide efficient and reliable system anal
 
 **[Usage]:**
 - Compile command: _make_
-- Compile with debug data command: _debug mycel.c_
+- Compile with debug data command: _make debug mycel.c_
 
 **[Contributing]:**
 All contributions are welcomed! Feel free to submit bug reports, feature requests, or pull requests to help improve the enumerator.
