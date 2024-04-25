@@ -10,13 +10,22 @@ Mycelium is an enumerator designed to provide efficient and reliable system anal
 - **Linux Compatibility:** Compatible with various linux distributions for seamless integration into your environment.
 
 **[Usage]:**
-- Compile command: _make_
-- Compile with debug data command: _make debug mycel.c_
+- Compile command:
+  1.  _make_
+  2. _chmod +x mycel_
+  3. ./mycel
+- Compile with debug data command:
+  1. _make debug mycel.c_
+  2. _chmod +x mycel_debug_
+  3. ./mycel_debug
+- Remove compiled filed:
+  1. _make clean_
 
 **[Contributing]:**
 All contributions are welcomed! Feel free to submit bug reports, feature requests, or pull requests to help improve the enumerator.
 
 **[License]:**
 This project is licensed under the GNU GENERAL PUBLIC LICENSE Version 3.
+
 
 
