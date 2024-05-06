@@ -1,8 +1,6 @@
 # Mycelium (Pre-Alpha)
 [![GPLv3 License](https://img.shields.io/badge/License-GPL%20v3-yellow.svg)](https://opensource.org/licenses/)
-[![Known Vulnerabilities](https://snyk.io/test/github/e1r2t374/mycelium/badge.svg)]
-
-(https://snyk.io/test/github/{username}/{repo})
+[![Known Vulnerabilities](https://snyk.io/test/github/e1r2t374/mycelium/badge.svg)](https://snyk.io/test/github/e1r2t374/mycelium)
 ## [Overview]:
 
 Mycelium is an enumerator designed to provide efficient and reliable system analysis on Linux platforms (soon windows and mac). Build in the C programming language, it harnesses the power of multithreading for each command to ensure lightning-fast performace while remaining lightweight and heavily customizable.
