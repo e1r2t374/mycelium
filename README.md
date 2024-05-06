@@ -1,6 +1,6 @@
 # Mycelium (Pre-Alpha)
 [![GPLv3 License](https://img.shields.io/badge/License-GPL%20v3-yellow.svg)](https://opensource.org/licenses/)
-[![Known Vulnerabilities](https://snyk.io/test/github/e1r2t374/mycelium/badge.svg)](https://snyk.io/test/github/e1r2t374/mycelium)
+[![Known Vulnerabilities](https://snyk.io/test/github/e1r2t374/mycelium/badge.svg)]
 
 (https://snyk.io/test/github/{username}/{repo})
 ## [Overview]:
