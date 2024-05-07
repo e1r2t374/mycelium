@@ -13,11 +13,20 @@
 #define BOLD "\033[1m"
 /*
 TODO
--Use array of structss to keep commands and the headers togeather, because it's quite easy to mess up and have two arrays with different sizes.
--Allocate memory dynamically for commands' output, and add coordination between threads to keep their outputs separate when printing.
+- Allocate memory dynamically for commands' output, and add coordination between threads to keep their outputs separate when printing.
 -Print command with header
 -Options such as steath, no color, no multithreading, etc
 */
+struct Commands {
+	char *header;
+	char *command;
+};
+struct Commands *createCommand(char *header, char *command) {
+	struct Commands *c = malloc(sizeof(struct Commands));
+	c->header = strdup(header);
+	c->command = strdup(command);
+	return c;
+}
 void error(const char *err_msg) {
 	fprintf(stderr, "\033[1m%sERROR:%s\033[0m\n", RED, err_msg);
 	exit(EXIT_FAILURE);
@@ -64,73 +73,107 @@ int sys_cmd(const char *command, char *output) {
 }
 
 void *exec_cmd(void *cmd) {
-	char **cmds = (char **)cmd;
 	char output[4096] = {0};
-	if (sys_cmd(cmds[0], output) == 0) {
-		printf("%s%s:\033[0m\n", GREEN, cmds[1]);
+	if (sys_cmd(((struct Commands*)cmd)->command, output) == 0) {
+		printf("%s%s:\033[0m\n", GREEN, ((struct Commands*)cmd)->header);
 		printf("%s\n%s\n", output, NORMAL);
 	} 
 	else {
-		printf("%s%s:\033[0m\n", RED, cmds[1]);
+		printf("%s%s:\033[0m\n", RED, ((struct Commands*)cmd)->header);
 		printf("%s\n%s\n", output, NORMAL);
 	}
 	return 0;
 }
 int main(void){
-	char *commands[] = { /*Add your commands to the array (Don't forget to add a matching header text)*/
-		"uname -a ||: && (cat /etc/*-release ||: && (cat /proc/version; sleep 1 ||:)) 2>/dev/null",
-		"echo ID=$(id) && for i in $(cut -d':' -f1 /etc/passwd);do id $i;done; 2>/dev/null sleep 1  2>/dev/null",
-		"env 2>/dev/null | grep -v 'LS_COLORS' 2>/dev/null",
-		"echo $(whoami) 2>/dev/null; sleep 1",
-		"cat /etc/shells 2>/dev/null",
-		"cat /etc/passwd 2>/dev/null",
-		"cat /etc/master.passwd 2>/dev/null",
-		"cat /etc/group 2>/dev/null",
-		"cat /etc/shadow 2>/dev/null",
-		"cat /etc/gshadow 2>/dev/null",
-		"cat /etc/sudoers 2>/dev/null",
-		"cat /etc/profile 2>/dev/null",
-		"cat /etc/bashrc 2>/dev/null",
-		"cat ~/.bash_profile 2>/dev/null",
-		"cat ~/.bashrc 2>/dev/null",
-		"cat ~/.bash_logout 2>/dev/null",
-		"cat /etc/services 2>/dev/null",
-		"ls -alh /usr/bin/ 2>/dev/null && ls -alh /sbin/ 2>/dev/null",
-		"dpkg --get-selections||:&&(rpm -qa||:&&(pacman -Q||:&&(ls -alh /var/cache/yum/||:&&(ls -alh /var/cache/apt/archivesO||:)))) 2>/dev/null",
+	//https://stackoverflow.com/questions/10162152/how-to-work-with-string-fields-in-a-c-struct
+	struct Commands *cmds[] ={
+		createCommand(
+			"Operating System/Kernel Info",/*Header*/
+			"uname -a ||: && (cat /etc/*-release ||: && (cat /proc/version; sleep 1 ||:)) 2>/dev/null"/*Command*/
+		),
+		createCommand(
+			"IDs and Groups",
+			"echo ID=$(id) && for i in $(cut -d':' -f1 /etc/passwd);do id $i;done; 2>/dev/null sleep 1  2>/dev/null"
+		),
+		createCommand(
+			"Env",
+			"env 2>/dev/null | grep -v 'LS_COLORS' 2>/dev/null"
+		),
+		createCommand(
+			"Current User",
+			"echo $(whoami) 2>/dev/null; sleep 1"
+		),
+		createCommand(
+			"shells",
+			"cat /etc/shells 2>/dev/null"
+		),
+		createCommand(
+			"passwd Contents",
+			"cat /etc/passwd 2>/dev/null"
+		),
+		createCommand(
+			"master.passwd contents",
+			"cat /etc/master.passwd 2>/dev/null"
+		),
+		createCommand(
+			"group Contents",
+			"cat /etc/group 2>/dev/null"
+		),
+		createCommand(
+			"shadow Contents",
+			"cat /etc/shadow 2>/dev/null"
+		),
+		createCommand(
+			"gshadow Contents",
+			"cat /etc/gshadow 2>/dev/null"
+		),
+		createCommand(
+			"sudoers Contents",
+			"cat /etc/sudoers 2>/dev/null"
+		),
+		createCommand(
+			"profile Contents",
+			"cat /etc/profile 2>/dev/null"
+		),
+		createCommand(
+			"bashrc Contents",
+			"cat /etc/bashrc 2>/dev/null"
+		),
+		createCommand(
+			".bash_profile Contents",
+			"cat /etc/bashrc 2>/dev/null"
+		),
+		createCommand(
+			"bashrc Contents",
+			"cat /etc/bashrc 2>/dev/null"
+		),
+		createCommand(
+			".bashrc Contents",
+			"cat ~/.bashrc 2>/dev/null"
+		),
+		createCommand(
+			".bash_logout Contents",
+			"cat ~/.bash_logout 2>/dev/null"
+		),
+		createCommand(
+			"bin and sbin Contents",
+			"ls -alh /usr/bin/ 2>/dev/null && ls -alh /sbin/ 2>/dev/null"
+		),
+		createCommand(
+			"Installed Packages",
+			"dpkg --get-selections||:&&(rpm -qa||:&&(pacman -Q||:&&(ls -alh /var/cache/yum/||:&&(ls -alh /var/cache/apt/archivesO||:)))) 2>/dev/null"
+		),
+	
 	};
-	char *headers[] = { /*The titles of the commands*/
-		"Operating System/Kernel Info",
-		"IDs and Groups",
-		"Env",
-		"Current User",
-		"Shells",
-		"Passwd Contents",
-		"Master.passwd Contents",
-		"Group Contents",
-		"Shadow Contents",
-		"Gshadow Contents",
-		"Sudoers Contents",
-		"etc/profile Contents",
-		"etc/bashrc Contents",
-		".bash_profile Contents",
-		".bashrc Contents",
-		".bash_logout Contents",
-		"etc/services Contents",
-		"/usr/bin and /sbin Contents",
-		"Installed Packages",
-	};
-	if(sizeof(commands) != sizeof(headers)){
-		error("Command and header arrays do not have the same number of elements.");
-	}
-	pthread_t threads[sizeof(commands)/sizeof(commands[0])];
+	pthread_t threads[sizeof(cmds)/sizeof(cmds[0])];
 	size_t i;
-	for (i = 0; i < sizeof(commands)/sizeof(commands[0]); i++) {
-		char **cmds = malloc(2 * sizeof(char *));
-		cmds[0] = commands[i];
-		cmds[1] = headers[i];
-		pthread_create(&threads[i], NULL, exec_cmd, cmds);
+	for (i = 0; i < sizeof(cmds)/sizeof(cmds[0]); i++) {
+		char **thread = malloc(2 * sizeof(struct Commands*));
+		thread[0] = cmds[i]->header;
+		thread[1] = cmds[i]->command;
+		pthread_create(&threads[i], NULL, exec_cmd, thread);
 	}
-	for (i = 0; i < sizeof(commands) / sizeof(commands[0]); i++) {
+	for (i = 0; i < sizeof(cmds) / sizeof(cmds[0]); i++) {
 		pthread_join(threads[i], NULL);
 	}
 	return 0;
