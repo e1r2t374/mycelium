@@ -13,7 +13,7 @@
 #define BOLD "\033[1m"
 /*
 TODO
-- Allocate memory dynamically for commands' output, and add coordination between threads to keep their outputs separate when printing.
+-Allocate memory dynamically for commands' output, and add coordination between threads to keep their outputs separate when printing.
 -Print command excuted with labal and output
 -Options such as steath, no color, no multithreading, etc
 */
@@ -93,6 +93,11 @@ int main(void){
 			createCommand("Label", "Command"),
 			The first argument is the labe(text shown above the command ouput), the second argument is the command to be executed.
 			keep in mind since this function is within an array you add a ","" instead of a ";".
+
+			[Protip]: 
+			Add 2>/dev/null to the end of the command to hide the error output.
+			This means that a command will only display output if it succeeds; 
+			thus preventing ugly error messages from being printed to the console.
 		*/
 		createCommand(
 			"Operating System/Kernel Info",/*Label*/
