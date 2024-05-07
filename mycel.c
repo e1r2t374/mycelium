@@ -13,8 +13,9 @@
 #define BOLD "\033[1m"
 /*
 TODO
+-Use array of structss to keep commands and the headers togeather, because it's quite easy to mess up and have two arrays with different sizes.
+- Allocate memory dynamically for commands' output, and add coordination between threads to keep their outputs separate when printing.
 -Print command with header
--Windows and mac detection
 -Options such as steath, no color, no multithreading, etc
 */
 void error(const char *err_msg) {
