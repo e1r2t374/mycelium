@@ -93,15 +93,11 @@ int main(void){
 		),
 		createCommand(
 			"IDs and Groups",
-			"echo ID=$(id) && for i in $(cut -d':' -f1 /etc/passwd);do id $i;done; 2>/dev/null sleep 1  2>/dev/null"
+			"echo YOURID=$(id) && for i in $(cut -d':' -f1 /etc/passwd);do id $i;done; 2>/dev/null sleep 1  2>/dev/null"
 		),
 		createCommand(
 			"Env",
 			"env 2>/dev/null | grep -v 'LS_COLORS' 2>/dev/null"
-		),
-		createCommand(
-			"Current User",
-			"echo $(whoami) 2>/dev/null; sleep 1"
 		),
 		createCommand(
 			"shells",
@@ -144,26 +140,25 @@ int main(void){
 			"cat /etc/bashrc 2>/dev/null"
 		),
 		createCommand(
-			"bashrc Contents",
-			"cat /etc/bashrc 2>/dev/null"
+			"Installed Packages (Dpkg)",
+			"dpkg --get-selections 2>/dev/null"
 		),
 		createCommand(
-			".bashrc Contents",
-			"cat ~/.bashrc 2>/dev/null"
+			"Installed Packages (Rpm)",
+			"rpm -qa 2>/dev/null"
 		),
 		createCommand(
-			".bash_logout Contents",
-			"cat ~/.bash_logout 2>/dev/null"
+			"Installed Packages (Apt)",
+			"apt list --installed 2>/dev/null"
 		),
 		createCommand(
-			"bin and sbin Contents",
-			"ls -alh /usr/bin/ 2>/dev/null && ls -alh /sbin/ 2>/dev/null"
+			"Installed Packages (Yum)",
+			"yum list installed 2>/dev/null"
 		),
 		createCommand(
-			"Installed Packages",
-			"dpkg --get-selections||:&&(rpm -qa||:&&(pacman -Q||:&&(ls -alh /var/cache/yum/||:&&(ls -alh /var/cache/apt/archivesO||:)))) 2>/dev/null"
+			"Installed Packages (Pacman)",
+			"pacman -Q 2>/dev/null"
 		),
-	
 	};
 	/* Multithreading */
 	pthread_t threads[sizeof(cmds)/sizeof(cmds[0])];
