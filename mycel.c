@@ -21,6 +21,7 @@ struct Commands {
 	char *header;
 	char *command;
 };
+/* Used to create commands */
 struct Commands *createCommand(char *header, char *command) {
 	struct Commands *c = malloc(sizeof(struct Commands));
 	c->header = strdup(header);
@@ -71,8 +72,8 @@ int sys_cmd(const char *command, char *output) {
 	}
 	return -1;
 }
-
-void *exec_cmd(void *cmd) {
+/* Execute command with header */
+void *exec(void *cmd) {
 	char output[4096] = {0};
 	if (sys_cmd(((struct Commands*)cmd)->command, output) == 0) {
 		printf("%s%s:\033[0m\n", GREEN, ((struct Commands*)cmd)->header);
@@ -85,7 +86,6 @@ void *exec_cmd(void *cmd) {
 	return 0;
 }
 int main(void){
-	//https://stackoverflow.com/questions/10162152/how-to-work-with-string-fields-in-a-c-struct
 	struct Commands *cmds[] ={
 		createCommand(
 			"Operating System/Kernel Info",/*Header*/
@@ -165,13 +165,14 @@ int main(void){
 		),
 	
 	};
+	/* Multithreading */
 	pthread_t threads[sizeof(cmds)/sizeof(cmds[0])];
 	size_t i;
 	for (i = 0; i < sizeof(cmds)/sizeof(cmds[0]); i++) {
 		char **thread = malloc(2 * sizeof(struct Commands*));
 		thread[0] = cmds[i]->header;
 		thread[1] = cmds[i]->command;
-		pthread_create(&threads[i], NULL, exec_cmd, thread);
+		pthread_create(&threads[i], NULL, exec, thread);
 	}
 	for (i = 0; i < sizeof(cmds) / sizeof(cmds[0]); i++) {
 		pthread_join(threads[i], NULL);
