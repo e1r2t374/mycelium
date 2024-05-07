@@ -21,7 +21,6 @@ struct Commands {
 	char *header;
 	char *command;
 };
-/* Used to create commands */
 struct Commands *createCommand(char *header, char *command) {
 	struct Commands *c = malloc(sizeof(struct Commands));
 	c->header = strdup(header);
