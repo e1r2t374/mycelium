@@ -14,16 +14,17 @@
 /*
 TODO
 - Allocate memory dynamically for commands' output, and add coordination between threads to keep their outputs separate when printing.
--Print command with header
+-Print command excuted with labal and output
 -Options such as steath, no color, no multithreading, etc
 */
 struct Commands {
-	char *header;
+	char *label;
 	char *command;
 };
-struct Commands *createCommand(char *header, char *command) {
+/* Used to create commands */
+struct Commands *createCommand(char *label, char *command) {
 	struct Commands *c = malloc(sizeof(struct Commands));
-	c->header = strdup(header);
+	c->label = strdup(label);
 	c->command = strdup(command);
 	return c;
 }
@@ -71,23 +72,30 @@ int sys_cmd(const char *command, char *output) {
 	}
 	return -1;
 }
-/* Execute command with header */
+/* print command output with label */
 void *exec(void *cmd) {
 	char output[4096] = {0};
 	if (sys_cmd(((struct Commands*)cmd)->command, output) == 0) {
-		printf("%s%s:\033[0m\n", GREEN, ((struct Commands*)cmd)->header);
+		printf("%s%s:\033[0m\n", GREEN, ((struct Commands*)cmd)->label);
 		printf("%s\n%s\n", output, NORMAL);
 	} 
 	else {
-		printf("%s%s:\033[0m\n", RED, ((struct Commands*)cmd)->header);
+		printf("%s%s:\033[0m\n", RED, ((struct Commands*)cmd)->label);
 		printf("%s\n%s\n", output, NORMAL);
 	}
 	return 0;
 }
 int main(void){
 	struct Commands *cmds[] ={
+		/*
+			If you want to add more commands, just add more createCommand() calls to this array.
+			[Syntax]:
+			createCommand("Label", "Command"),
+			The first argument is the labe(text shown above the command ouput), the second argument is the command to be executed.
+			keep in mind since this function is within an array you add a ","" instead of a ";".
+		*/
 		createCommand(
-			"Operating System/Kernel Info",/*Header*/
+			"Operating System/Kernel Info",/*Label*/
 			"uname -a ||: && (cat /etc/*-release ||: && (cat /proc/version; sleep 1 ||:)) 2>/dev/null"/*Command*/
 		),
 		createCommand(
@@ -164,7 +172,7 @@ int main(void){
 	size_t i;
 	for (i = 0; i < sizeof(cmds)/sizeof(cmds[0]); i++) {
 		char **thread = malloc(2 * sizeof(struct Commands*));
-		thread[0] = cmds[i]->header;
+		thread[0] = cmds[i]->label;
 		thread[1] = cmds[i]->command;
 		pthread_create(&threads[i], NULL, exec, thread);
 	}
