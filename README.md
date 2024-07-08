@@ -13,7 +13,7 @@ This project is licensed under the GNU GENERAL PUBLIC LICENSE Version 3.
 
 - **Multithreading:** Utilizing multithreading capabilities for fast and concurrent system enumeration and analysis.
 - **Customizable:** Tailor the enumerator to suit your specific needs and preferances.
-- **Suckless Design Philosophy:** Emphasizing simplicity, efficiency, and minimalism for a streamlined user experience.
+- **Minimal Design Philosophy:** Emphasizing simplicity, efficiency, and minimalism for a streamlined user experience.
 - **Linux Compatibility:** Compatible with various linux distributions for seamless integration into your environment.
 
 ## [Usage]:
