@@ -17,15 +17,15 @@ This project is licensed under the GNU GENERAL PUBLIC LICENSE Version 3.
 - **Linux Compatibility:** Compatible with various linux distributions for seamless integration into your environment.
 
 ## [Usage]:
-### Compile command: 
+### Command for compiling the program: 
 _make_
 ### Run:
 _./mycel_
-### Compile with debug data command: 
+### Command for compiling the program with debug data command: 
 _make debug_
 ### Run debug:
 _./mycel_debug_
-### Remove compiled filed:
+### Command to remove compiled filed:
 _make clean_
 
 ## [Contributing]:
