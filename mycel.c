@@ -11,15 +11,7 @@
 #define GREEN "\033[38;2;0;150;0m"
 #define NORMAL "\033[0m"
 #define BOLD "\033[1m"
-/*
 
-TODO:
--Add how to add custom commands to documentation.
--Allocate memory dynamically for commands' output, and add coordination between threads to keep their outputs separate when printing.
--Print command excuted with labal and output
--Options such as steath, no color, no multithreading, etc
-
-*/
 struct Commands {
 	char *label;
 	char *command;
