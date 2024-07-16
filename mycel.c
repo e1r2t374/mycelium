@@ -83,20 +83,25 @@ void *exec(void *cmd) {
 int main(void){
 	struct Commands *cmds[] ={
 		/*
-			If you want to add more commands, just add more createCommand() calls to this array.
+			If you want to add more commands, just add more createCommand() calls.
 			[Syntax]:
 			createCommand("Label", "Command"),
-			The first argument is the labe(text shown above the command ouput), the second argument is the command to be executed.
-			keep in mind since this function is within an array you add a ","" instead of a ";".
-
+			The first argument is the label which is the text displayed above the output, the second argument is the command to be executed.
+			keep in mind since this function is within an array you add a "," instead of a ";".
+			
+   			[Output example]:
+   			createCommand("Test", "echo 'output123'"),
+   			test: <- Label
+      			output1234 <- Command output
+	 
 			[Protip]: 
 			Add 2>/dev/null to the end of the command to hide the error output.
 			This means that a command will only display output if it succeeds; 
 			thus preventing ugly error messages from being printed to the console.
 		*/
 		createCommand(
-			"Operating System/Kernel Info",/*Label*/
-			"uname -a ||: && (cat /etc/*-release ||: && (cat /proc/version; sleep 1 ||:)) 2>/dev/null"/*Command*/
+			/*Label*/"Operating System/Kernel Info",
+			/*Command*/"uname -a ||: && (cat /etc/*-release ||: && (cat /proc/version; sleep 1 ||:)) 2>/dev/null"
 		),
 		createCommand(
 			"IDs and Groups",
